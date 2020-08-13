@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="br">
+    
+    <head>
+        <title>HAND Structure</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Website para analise estrutural"/>
+        <meta name="author" content="Gledson Assis"/>
+        <!-- Load Roboto font -->
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <!-- Load css styles -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap2.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.cslider.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css" />
+        <link rel="stylesheet" type="text/css" href="css/animate.css" />
+        <link href="css/font-awesome.css" rel="stylesheet" />
+        <!-- Fav and touch icons -->
+        <link rel="shortcut icon" href="images/ico/Logo.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72.png">
+        <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+        
+        <!--Script de desenho-->
+        <script type="text/javascript" src="analise_compress.js"></script>
+    </head>
+    
+    <body onload="draw()" style="background: url(images/Slider.png); background-repeat: round">
+    <div style="position: fixed;width: 100%;height: 100%; background: rgba(43, 119, 226, 0.75);opacity: 1; z-index: -5"></div>
+    <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a href="index.html" class="brand">
+                        <img src="images/logo.png" width="120" height="40" alt="Logo" />
+                        <!-- This is website logo -->
+                    </a>
+                    <!-- Navigation button, visible on small resolution -->
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <i class="icon-menu"></i>
+                    </button>
+                    <!-- Main navigation -->
+                    <div class="nav-collapse collapse pull-right">
+                        <ul class="nav" id="top-navigation">
+                            <li><a href="index.html">Home</a></li>
+                            <li class="active"><a href="ANA-Web.html">ANA-Web</a></li>
+                            <li><a href="design.html">Design</a></li>
+                            <li><a href="Fingers.html">HAND-Fingers</a></li>
+                            <li><a href="about.html">About</a></li>
+                        </ul>
+                    </div>
+                    <!-- End main navigation -->
+                </div>
+            </div>
+        </div>
+    <section class="wrapper">
+        <div style="margin-top: 30px">
+            <div class="col-lg-9 col-md-9 col-sm-12">
+                <div class="showback">
+                        <canvas id="canvas" width="100%" height="100%" style="width: 100%;height: 100%; background: #101010; cursor: crosshair"></canvas>
+                    <div class="btn-group">
+                        <button id="move" class="btn btn-primary btn-xs" style="margin: 0" onclick="btn_move()"><img src="images/img/mover.png" width="16"></button>
+                        <button id="zoom" class="btn btn-default btn-xs" style="margin: 0" onclick="btn_zoom()"><img src="images/img/Zoom.png" width="16"></button>
+                        <button id="download" class="btn btn-default btn-xs" style="margin: 0"><a id="btn-download"><img src="images/img/save-icon.png" width="16"></a></button>
+                    </div>
+                    <div class="btn-group">
+                        <input type="range" id="status" min="1" value="100" max="500" step="1">
+                    </div>
+                    <div class="btn-group">
+                        <label>Threme: </label>
+                        <select id="threme" style="width: 70px" onchange="threme()">
+                            <option>Dark</option>
+                            <option>Light</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12">
+                <form class="showback">
+                    <div id="menu_1" style="display: block; min-width: 200px; width: 100%; height: 425px">
+                        <!----------------------- Botões de Opções ------------------------------>
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <button type="button" title="Nó" id="new_no" class="btn btn-primary btn-xs" onclick="nos()">
+                                    <a><img src="images/img/nó.png" width="15"></a>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" title="Barra" id="new_barra" class="btn btn-default btn-xs" onclick="barra()">
+                                    <a><img src="images/img/Barra.png" width="16"></a>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" title="Apoio" id="new_apoio" class="btn btn-default btn-xs" onclick="apoio()">
+                                    <a><img src="images/img/Apoio.png" width="17"></a>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" title="Carga" id="new_carga" class="btn btn-default btn-xs" onclick="carga()">
+                                    <a><img src="images/img/Carga.png" width="15"></a>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" title="Seção" id="secao" class="btn btn-default btn-xs" onclick="menu_secao()">
+                                    <a><img src="images/img/secao.png" width="10"></a>
+                                </button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" title="Material" id="material" class="btn btn-default btn-xs" onclick="materiais()">
+                                    <a><img src="images/img/material.png" width="15"></a>
+                                </button>
+                            </div>
+                        </div>
+                        <!------------------------- Sub menú Nó -------------------------------->
+                        <div id="nos">
+                            <div class="scroll-pers" style="height: 400px; overflow: auto">
+                                <table style="width: 100%" id="data_table_no" class="table-bordered table-striped table-condensed">
+                                    <tr>
+                                        <th width="50px" class="text-center">Nó</th>
+                                        <th class="text-center">x (m)</th>
+                                        <th class="text-center">y (m)</th>
+                                        <th class="text-center">Rot</th>
+                                        <th style="width: 52px;"></th>
+                                    </tr>
+
+                                    <tbody>
+                                    <tr id="row1">
+                                        <td id="No1" class="text-center">1</td>
+                                        <td id="x_1" class="text-center">0</td>
+                                        <td id="y_1" class="text-center">0</td>
+                                        <td class="text-center"><input id="rot1" type="checkbox" value disabled></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" id="edit_button1" class="btn btn-primary btn-xs" onclick="edit_row_no('1')">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                                <button type="button" style="display: none; border-bottom-left-radius: 4px; border-top-left-radius: 4px" id="save_button1" class="btn btn-success btn-xs" onclick="save_row_no('1')">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-danger" onclick="delete_row_no('1')">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td  style="width: 50px"></td>
+                                        <td><input type="number" style="width: 100%; height: 22px" id="new_x"></td>
+                                        <td><input type="number" style="width: 100%; height: 22px" id="new_y"></td>
+                                        <td></td>
+                                        <td><button type="button" style="width: 40px;  height: 22px" class="btn btn-success btn-xs" onclick="add_row_no()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!------------------------ Sub menú Barra ------------------------------>
+                        <div id="barras" style="display: none">
+                            <div class="scroll-pers" style="height: 400px; overflow: auto">
+                                <table style="width: 100%" id="data_table_barra" class="table-bordered table-striped table-condensed">
+                                    <tr>
+                                        <th width="50px" class="text-center">Barra</th>
+                                        <th class="text-center">Nó A</th>
+                                        <th class="text-center">Nó B</th>
+                                        <th width="51px"></th>
+                                    </tr>
+                                    <tbody>
+                                    <tr>
+                                        <td  style="width: 50px"></td>
+                                        <td><select id="new_inicio" style="width: 100%; height: 22px">
+                                            <option id="barra_inicio1">1</option>
+                                        </select></td>
+                                        <td><select id="new_fim" style="width: 100%; height: 22px">
+                                            <option id="barra_fim1">1</option>
+                                        </select></td>
+                                        <td><button type="button" style="width: 40px;  height: 22px" class="btn btn-success btn-xs" onclick="add_row_barra()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!------------------------ Sub menú Apoio ------------------------------>
+                        <div id="apoio" style="display: none">
+                            <div class="scroll-pers" style="height: 200px; overflow: auto">
+                                <table style="width: 100%" id="data_table_apoio" class="table-bordered table-striped table-condensed">
+                                    <tr>
+                                        <th width="50px" class="text-center">Nó</th>
+                                        <th class="text-center">Apoio</th>
+                                        <th width="51px"></th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="scroll-pers" style="height: 190px; margin-top: 10px">
+                                <div class="btn-group btn-group-justified">
+                                    <div class="btn-group"><button type="button" class="btn btn-primary btn-xs" id="btn_rigido" onclick="menu_rigido()">Rígido</button></div>
+                                    <div class="btn-group"><button type="button" class="btn btn-default btn-xs" id="btn_flexivel" onclick="menu_flexivel()">Flexível</button></div>
+                                </div>
+                                <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                    <tr>
+                                        <td width="40px" class="text-center">Nó</td>
+                                        <td class="text-center"><select style="width: 100%; height: 22px" id="select_no">
+                                            <option id="apoio1">1</option>
+                                        </select></td>
+                                        <td width="51px"><button type="button" style="width: 40px;height: 22px" class="btn btn-success btn-xs" onclick="add_row_apoio()">
+                                            <i class="fa fa-plus"></i></button></td>
+                                    </tr>
+                                </table>
+                                <div id="menu_rigido" style="display: block">
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="rigido_x" type="checkbox" value> Fixo X</label></td>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="rigido_y" type="checkbox" value> Fixo Y</label></td>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="rigido_rot" type="checkbox" value> Fixo Rot</label></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="status_Dx" type="checkbox" disabled="disabled"> Dx</label></td>
+                                            <td><input class="form-control" id="valor_Dx" type="number" style="width: 100%; height: 22px" readonly placeholder="em breve"></td><td>mm</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="status_Dy" type="checkbox" disabled="disabled"> Dy</label></td>
+                                            <td><input class="form-control" id="valor_Dy" type="number" style="width: 100%; height: 22px" readonly placeholder="em breve"></td><td>mm</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="status_Rz" type="checkbox" disabled="disabled"> Rz</label></td>
+                                            <td><input class="form-control" id="valor_Rz" type="number" style="width: 100%; height: 22px" readonly placeholder="em breve"></td><td>rad</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id="menu_flexivel" style="display: none">
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="status_Kx" type="checkbox" disabled="disabled"> Kx</label></td>
+                                            <td><input class="form-control" id="valor_Kx" type="number" style="width: 100%; height: 22px" readonly placeholder="em breve"></td><td>kN/m</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="status_Ky" type="checkbox" disabled="disabled"> Ky</label></td>
+                                            <td><input class="form-control" id="valor_Ky" type="number" style="width: 100%; height: 22px" readonly placeholder="em breve"></td><td>kN/m</td>
+                                        </tr>
+                                        <tr>
+                                            <td><label style="width: 100%" class="checkbox-inline"><input id="status_Kz" type="checkbox" disabled="disabled"> Kz</label></td>
+                                            <td><input class="form-control" id="valor_Kz" type="number" style="width: 100%; height: 22px" readonly placeholder="em breve"></td><td>kNm/rad</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!------------------------ Sub menú Carga ------------------------------>
+                        <div id="carga" style="display: none">
+                            <div class="scroll-pers" style="height: 230px; overflow: auto">
+                                <table style="width: 100%" id="data_table_carga" class="table-bordered table-striped table-condensed">
+                                    <tr>
+                                        <th width="50px" class="text-center">Elemento</th>
+                                        <th class="text-center">Tipo</th>
+                                        <th width="51px"></th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="scroll-pers" style="height: 190px; margin-top: 10px">
+                                <div class="btn-group btn-group-justified">
+                                    <div class="btn-group"><button type="button" class="btn btn-primary btn-xs" id="btn_nodal" onclick="menu_nodal()">Nodal</button></div>
+                                    <div class="btn-group"><button type="button" class="btn btn-default btn-xs" id="btn_distribuido" onclick="menu_distribuido()">Distribuido</button></div>
+                                </div>
+
+                                <div id="menu_nodal" style="display: block">
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tr>
+                                            <td width="40px" class="text-center">Nó</td>
+                                            <td class="text-center"><select style="width: 100%; height: 22px" id="no_force">
+                                                <option id="no_force1">1</option>
+                                            </select></td>
+                                            <td width="51px"><button type="button" style="width: 40px;height: 22px" class="btn btn-success btn-xs" onclick="add_row_no_carga()">
+                                                <i class="fa fa-plus"></i></button></td>
+                                        </tr>
+                                    </table>
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr><td> Fx</td><td><input id="value_Fx" type="number" style="width: 100%; height: 22px"></td><td>kN</td></tr>
+                                        <tr><td> Fy</td><td><input id="value_Fy" type="number" style="width: 100%; height: 22px"></td><td>kN</td></tr>
+                                        <tr><td> Mz</td><td><input id="value_Mz" type="number" style="width: 100%; height: 22px"></td><td>kNm</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id="menu_distribuido" style="display: none">
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tr>
+                                            <td width="40px" class="text-center">Barra</td>
+                                            <td class="text-center"><select style="width: 100%; height: 22px" id="barra_force"></select></td>
+                                            <td width="51px"><button type="button" style="width: 40px;height: 22px" class="btn btn-success btn-xs" onclick="add_row_barra_carga()">
+                                                <i class="fa fa-plus"></i></button></td>
+                                        </tr>
+                                    </table>
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr><td> Qx</td><td><input id="value_qxi" type="number" style="width: 100%; height: 22px"></td><td>kN/m</td></tr>
+                                        <tr><td> Qy(i)</td><td><input id="value_qyi" type="number" style="width: 100%; height: 22px"></td><td>kN/m</td></tr>
+                                        <tr><td> Qy(f)</td><td><input id="value_qyf" type="number" style="width: 100%; height: 22px"></td><td>kN/m</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!------------------------ Sub menú Seção ------------------------------>
+                        <div id="menu_secao" style="display: none">
+                            <div class="scroll-pers text-center center-block" style="height: 320px; margin-top: 10px">
+                                <select id="select_section" style="margin-top: 5px" onchange="secao_change(this.value)">
+                                    <option disabled selected value> -- Seção -- </option>
+                                    <option value="images/img/secao_ret.png">Retangular</option>
+                                    <option value="images/img/secao_I.png">Seção I</option>
+                                    <option value="images/img/secao_L.png">Seção L</option>
+                                    <option value="images/img/secao_T.png">Seção T</option>
+                                    <option value="images/img/secao_C.png">Seção C</option>
+                                    <option value="images/img/secao_circ.png">Circular</option>
+                                    <option value="images/img/secao_tubo.png">Tubo</option>
+                                    <option value="images/img/secao_generica.png">Genérica</option>
+                                </select>
+                                <div id="section_type" style="width: 100%; height: 50%; background: no-repeat center; margin-top: 15px"></div>
+                                <div class="btn-group btn-group-justified">
+                                    <div class="btn-group"><button type="button" class="btn btn-primary btn-xs" id="Geo_prop" onclick="menu_prop_geom()">Propriedades</button></div>
+                                    <div class="btn-group"><button type="button" class="btn btn-default btn-xs" id="Geo_elementos" onclick="menu_elementos_geometria()">Elementos</button></div>
+                                </div>
+
+                                <div class="scroll-pers" style="height: 190px" id="menu_geo_prop">
+                                    <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <td style="border-right: none"> b</td>
+                                            <td style="border-left: none"><input readonly type="number" id="b" style="width: 100%; height: 22px" onkeyup="calc_area()">
+                                            </td>
+                                            <td style="border-right: none"> tf</td>
+                                            <td style="border-left: none"><input readonly type="number" id="tf" style="width: 100%; height: 22px" onkeyup="calc_area()">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border-right: none"> d</td>
+                                            <td style="border-left: none"><input readonly type="number" id="d" style="width: 100%; height: 22px" onkeyup="calc_area()">
+                                            </td>
+                                            <td style="border-right: none"> tw</td>
+                                            <td style="border-left: none"><input readonly type="number" id="tw" style="width: 100%; height: 22px" onkeyup="calc_area()">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table style="width: 100%; margin-top: 10px" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <td style="border-right: none"> A</td>
+                                            <td style="border-left: none"><input id="area" class="form-control" type="number" readonly style="width: 100%; height: 22px" placeholder="cm²"></td>
+                                            <td style="border-right: none"> I</td>
+                                            <td style="border-left: none"><input id="inercia" class="form-control" type="number" readonly style="width: 100%; height: 22px" placeholder="cm⁴"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table style="width: 100%; margin-top: 10px" class="table-bordered table-striped table-condensed">
+                                        <tbody>
+                                        <tr>
+                                            <td style="border-right: none"><label style="margin-bottom:0">Barra:
+                                                <select style="width: 60px" id="secao_barra"></select></label>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown">
+                                                        Atribuir <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a href="#" onclick="add_row_prop_bar()">... a Barra</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a href="#" onclick="add_prop_all_bar()">... a Todos</a></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="scroll-pers" style="height: 170px; display: none; overflow: auto" id="menu_geo_element">
+                                    <table id="data_bars_prop" style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tr><th class="text-center" style="width: 40px">Barra</th><th class="text-center">A</th><th class="text-center">I</th></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!----------------------- Sub menú Material ---------------------------->
+                        <div id="menu_material" style="display: none">
+                            <div class="scroll-pers text-center" style="height: 400px">
+                                <table style="width: 100%" class="table-bordered table-striped table-condensed">
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-center" style="width: 50px">E =</td><td class="text-center"><input type="number" Value="100" style="height: 22px; width: 80%" id="elasticidade"></td><td class="text-center">GPa</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 50px">γ =</td><td class="text-center"><input type="number" Value="0.2" style="height: 22px; width: 80%" id="poisson"></td><td class="text-center"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table style="width: 100%; margin-top: 10px" class="table-bordered table-striped table-condensed">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-right: none"><label style="margin-bottom:0">Barra:
+                                            <select style="width: 60px" id="material_barra"></select></label>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown">
+                                                    Atribuir <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="#" onclick="add_mat_bar()">... a Barra</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#" onclick="add_mat_all_bar()">... a Todos</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="scroll-pers" style="height: 300px; overflow: auto">
+                                    <table id="data_bars_material" style="width: 100%" class="table-bordered table-striped table-condensed">
+                                        <tr><th class="text-center" style="width: 40px">Barra</th><th class="text-center">E</th><th class="text-center">γ</th></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!---------------------------------------------------------------------->
+                    </div>
+                    <div id="menu_2" style="display: none; min-width: 200px; width: 100%; height: 425px">
+                        <div class="btn-group btn-group-justified">
+                            <div class="btn-group">
+                                <button type="button" id="btn_reac" class="btn btn-primary btn-xs" onclick="res_reacoes()">R</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" id="btn_norm" class="btn btn-default btn-xs" onclick="res_normais()">N</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" id="btn_cort" class="btn btn-default btn-xs" onclick="res_cortantes()">V</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" id="btn_momt" class="btn btn-default btn-xs" onclick="res_momentos()">M</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" id="btn_deform" class="btn btn-default btn-xs" onclick="res_desloc()">D</button>
+                            </div>
+                        </div>
+                        <div class="scroll-pers" id="Reacoes" style="display: block; height: 400px; overflow: auto">
+                            <table style="width: 100%" id="reacoes_results" class="table-bordered table-striped table-condensed" >
+                                <tr>
+                                    <th class="text-center">Nó</th>
+                                    <th class="text-center">Rx</th>
+                                    <th class="text-center">Ry</th>
+                                    <th class="text-center">Mz</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="scroll-pers" id="Normais" style="display: none; height: 400px; overflow: auto">
+                            <table style="width: 100%" id="normais_results" class="table-bordered table-striped table-condensed" >
+                                <tr>
+                                    <th class="text-center">Barra</th>
+                                    <th class="text-center">Ni</th>
+                                    <th class="text-center">Nf</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="scroll-pers" id="Cortantes" style="display: none; height: 400px; overflow: auto">
+                            <table style="width: 100%" id="cortant_results" class="table-bordered table-striped table-condensed" >
+                                <tr>
+                                    <th class="text-center">Barra</th>
+                                    <th class="text-center">Vi</th>
+                                    <th class="text-center">Vf</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="scroll-pers" id="Momentos" style="display: none; height: 400px; overflow: auto">
+                            <table style="width: 100%" id="moment_results" class="table-bordered table-striped table-condensed" >
+                                <tr>
+                                    <th class="text-center">Barra</th>
+                                    <th class="text-center">Mi</th>
+                                    <th class="text-center">Mf</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="scroll-pers" id="Deformacoes" style="display: none; height: 400px; overflow: auto">
+                            <table style="width: 100%" id="desloc_results" class="table-bordered table-striped table-condensed" >
+                                <tr>
+                                    <th class="text-center">Nó</th>
+                                    <th class="text-center">dx</th>
+                                    <th class="text-center">dy</th>
+                                    <th class="text-center">dz</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-center" style="width: 100%; padding-top: 14px">
+                        <button type="button" id="btn_dados" class="btn btn-primary btn-xs" style="width: 49%" onclick="menu_dados()">Entrada</button>
+                        <button type="button" id="btn_Resultados" class="btn btn-default btn-xs" style="margin: 0; width: 49%" onclick="menu_resultados()"><i class="fa fa-bolt"></i> Calcular</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+        <!-- Include javascript -->
+        <script src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery.mixitup.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script type="text/javascript" src="js/modernizr.custom.js"></script>
+        <script type="text/javascript" src="js/jquery.bxslider.js"></script>
+        <script type="text/javascript" src="js/jquery.cslider.js"></script>
+        <script type="text/javascript" src="js/jquery.placeholder.js"></script>
+        <script type="text/javascript" src="js/jquery.inview.js"></script>
+        <!-- css3-mediaqueries.js for IE8 or older -->
+        <!--[if lt IE 9]-->
+        <script src="js/respond.min.js"></script>
+        <!--[endif]-->
+    </body>
+</html>
